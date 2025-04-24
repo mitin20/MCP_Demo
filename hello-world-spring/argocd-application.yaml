@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-world-spring
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/mitin20/MCP_Demo.git'
+    targetRevision: main
+    path: hello-world-spring
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
