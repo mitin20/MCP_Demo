@@ -33,6 +33,12 @@ jobs:
     - name: Build with Maven
       run: ./mvnw clean package
 
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-jar
+        path: target/*.jar
+
   test:
     runs-on: ubuntu-latest
 
@@ -65,11 +71,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Log in to Docker Hub
-      run: echo "Skipping authentication for public registry"
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: app-jar
+        path: target/
 
-    - name: Build and push Docker image
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build Docker image
       run: |
-        docker build -t hello-world-spring:latest .
-        docker tag hello-world-spring:latest public-registry/hello-world-spring:latest
-        docker push public-registry/hello-world-spring:latest
+        docker build -t mcp-demo:latest .
+        docker tag mcp-demo:latest mcp-demo:${{ github.sha }}
