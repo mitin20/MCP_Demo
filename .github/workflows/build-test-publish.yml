@@ -22,12 +22,13 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Validate Maven Wrapper
-      run: |
-        if [ ! -f ./mvnw ]; then
-          echo "Error: Maven wrapper (mvnw) is missing. Please add it to the repository."
-          exit 1
-        fi
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v4.5
+      with:
+        maven-version: 3.8.6
+
+    - name: Initialize Maven Wrapper
+      run: mvn -N wrapper:wrapper
 
     - name: Build with Maven
       run: ./mvnw clean package
@@ -45,12 +46,13 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Validate Maven Wrapper
-      run: |
-        if [ ! -f ./mvnw ]; then
-          echo "Error: Maven wrapper (mvnw) is missing. Please add it to the repository."
-          exit 1
-        fi
+    - name: Set up Maven
+      uses: stCarolas/setup-maven@v4.5
+      with:
+        maven-version: 3.8.6
+
+    - name: Initialize Maven Wrapper
+      run: mvn -N wrapper:wrapper
 
     - name: Run tests with Maven
       run: ./mvnw test
